@@ -10,12 +10,11 @@
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.10.0",
-    "@prisma/client": "^6.16.3",
+    "@prisma/client": "^6.17.1",
     "@prisma/extension-accelerate": "^2.0.2",
     "bcrypt": "^6.0.0",
     "next": "15.5.4",
     "next-auth": "^5.0.0-beta.29",
-    "prisma": "^6.16.3",
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "react-hook-form": "^7.63.0",
@@ -30,6 +29,7 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "15.5.4",
+    "prisma": "^6.17.1",
     "tailwindcss": "^4",
     "typescript": "^5"
   }
