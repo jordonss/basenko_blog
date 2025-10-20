@@ -12,9 +12,9 @@ export default function Home() {
           height={38}
           priority
         />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
+        <ol className="font-unbounded list-inside font-bold list-decimal text-6xl text-center sm:text-left uppercase">
           <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
+            Пограничник в войне{" "}
             <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
               app/page.tsx
             </code>
