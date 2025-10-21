@@ -3,21 +3,19 @@
 
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #344532;
+  --foreground: #F5EBEB;
+}
+
+@theme {
+	--text-main: 5rem;
+	--text-sub: 8.75rem;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
 	--font-unbounded: var(--font-unbounded);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
 }
 
 body {
