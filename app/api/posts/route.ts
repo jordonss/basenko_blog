@@ -52,3 +52,26 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: errorMessage }, { status: 500 });
   }
 }
+
+export const POSTS_PER_PAGE = 3;
+
+export async function GET(req: NextRequest) {
+  const url = new URL(req.url);
+  const page = Number(url.searchParams.get('page') || '1');
+  const skip = (page - 1) * POSTS_PER_PAGE;
+
+  try {
+    const [posts, totalPosts] = await prisma.$transaction([
+      prisma.post.findMany({
+        take: POSTS_PER_PAGE,
+        skip: skip,
+        orderBy: { createdAt: 'desc' },
+      }),
+      prisma.post.count(),
+    ]);
+    const hasMore = skip + posts.length < totalPosts;
+    return NextResponse.json({ posts, hasMore });
+  } catch (error) {
+    return NextResponse.json({ error: 'Ошибка загрузки постов' }, { status: 500 });
+  }
+}
