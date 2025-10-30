@@ -1,16 +1,18 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import Link from 'next/link';
-import Image from 'next/image';
-import type { Post } from '@prisma/client';
+import { useState } from "react";
+import type { Post } from "@prisma/client";
+import PostCard from "../components/post-card";
 
 interface PostListProps {
   initialPosts: Post[];
   initialHasMore: boolean;
 }
 
-export default function PostList({ initialPosts, initialHasMore }: PostListProps) {
+export default function PostList({
+  initialPosts,
+  initialHasMore,
+}: PostListProps) {
   const [posts, setPosts] = useState<Post[]>(initialPosts);
   const [page, setPage] = useState(2);
   const [hasMore, setHasMore] = useState(initialHasMore);
@@ -18,35 +20,39 @@ export default function PostList({ initialPosts, initialHasMore }: PostListProps
 
   const loadMorePosts = async () => {
     setIsLoading(true);
-    const response = await fetch(`/api/posts?page=${page}`);
-    const { posts: newPosts, hasMore: newHasMore } = await response.json();
-    setPosts(prev => [...prev, ...newPosts]);
-    setPage(prev => prev + 1);
-    setHasMore(newHasMore);
-    setIsLoading(false);
+    try {
+      const response = await fetch(`/api/posts?page=${page}`);
+      const { posts: newPosts, hasMore: newHasMore } = await response.json();
+      setPosts((prev) => [...prev, ...newPosts]);
+      setPage((prev) => prev + 1);
+      setHasMore(newHasMore);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
-    <div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {posts.map((post) => (
-          <Link href={`/posts/${post.id}`} key={post.id} className="border rounded-lg overflow-hidden hover:shadow-xl transition-shadow">
-            {post.imageUrl && (
-              <Image src={post.imageUrl} alt={post.title} width={400} height={192} className="w-full h-48 object-cover" />
-            )}
-            <div className="p-4">
-              <h3 className="text-xl font-semibold">{post.title}</h3>
-            </div>
-          </Link>
-        ))}
+    <section className="w-full py-1 px-4">
+      <div className="container mx-auto">
+        <div className="flex flex-wrap justify-center gap-8 mb-12">
+          {posts.map((post) => (
+            <PostCard key={post.id} post={post} />
+          ))}
+        </div>
+
+        {/* Кнопка "Больше историй" */}
+        <div className="text-center">
+          {hasMore && (
+            <button
+              onClick={loadMorePosts}
+              disabled={isLoading}
+              className="bg-[#4A5C43] text-white font-bold py-3 px-8 rounded-md hover:bg-opacity-90 transition-colors disabled:bg-gray-400"
+            >
+              {isLoading ? "Загрузка..." : "Больше историй"}
+            </button>
+          )}
+        </div>
       </div>
-      <div className="text-center mt-8">
-        {hasMore && (
-          <button onClick={loadMorePosts} disabled={isLoading} className="bg-gray-800 text-white font-bold py-2 px-6 rounded disabled:bg-gray-400">
-            {isLoading ? 'Загрузка...' : 'Читать далее'}
-          </button>
-        )}
-      </div>
-    </div>
+    </section>
   );
 }
