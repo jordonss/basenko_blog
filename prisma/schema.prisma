@@ -34,3 +34,13 @@ model Post {
   author    User?    @relation(fields: [authorId], references: [id])
   authorId  String?
 }
+
+model SliderImage {
+  id        String   @id @default(cuid())
+  imageUrl  String
+  altText   String?
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+
+  @@index([order]) // Добавляем индекс для быстрой сортировки
+}

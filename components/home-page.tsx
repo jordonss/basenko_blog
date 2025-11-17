@@ -6,7 +6,7 @@ import Military from "@/images/uniform.png";
 export default function HomePage() {
   return (
     <>
-      <div className="relative">
+      <div className="relative pb-10">
         <div className="absolute w-[65%] inset-0 bg-[url(../images/world-map.png)] bg-cover bg-center opacity-5"></div>
         <div className="relative">
           <MainHeader />

@@ -72,6 +72,7 @@ export async function GET(req: NextRequest) {
     const hasMore = skip + posts.length < totalPosts;
     return NextResponse.json({ posts, hasMore });
   } catch (error) {
-    return NextResponse.json({ error: 'Ошибка загрузки постов' }, { status: 500 });
+    const errorMessage = error instanceof Error ? error.message : 'Произошла неизвестная ошибка';
+    return NextResponse.json({ error: `Ошибка загрузки постов: ${errorMessage}` }, { status: 500 });
   }
 }

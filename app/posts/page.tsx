@@ -19,7 +19,7 @@ export default async function PostsGridPage() {
 
   return (
     <main className="flex flex-col mx-auto p-4 bg-(--foreground)">
-      <h1 className="text-5xl font-black text-[#344532] font-unbounded mb-1 pl-20 text-left">БЛОГ</h1>
+      <h2 className="text-5xl font-black text-[#344532] font-unbounded mb-1 pl-20 text-left">БЛОГ</h2>
 			<div className="border-b-4 border-[#4A5C43] w-100 mb-10 ml-20"></div>
       <PostList initialPosts={posts} initialHasMore={hasMore} />
     </main>
