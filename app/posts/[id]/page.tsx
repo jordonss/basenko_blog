@@ -2,6 +2,7 @@ import prisma from "../../lib/prisma";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
+import Footer from "@/components/footer";
 
 async function getPost(id: string) {
   const post = await prisma.post.findUnique({
@@ -35,18 +36,26 @@ export default async function PostPage({ params }: { params: { id: string } }) {
           </ul>
         </nav>
       </header>
-      <main className="flex justify-center px-30 bg-foreground">
-        <h1 className="bg-background max-w-3xl text-4xl font-bold mb-5 p-10 font-unbounded text-[#F5EBEB]">
-          {post.title}
-        </h1>
+      <main className="flex justify-center px-30 py-10 bg-foreground">
+        <div className="lg:w-3/4 sm:w-1/2">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-[#344532] font-unbounded pl-4 sm:pl-0 mb-2 text-left">
+            БЛОГ
+          </h2>
+          <div className="border-b-4 border-[#4A5C43] w-1/5 sm:w-1/2 mb-6 lg:mb-10"></div>
+          <h1 className="bg-background max-w-[550px] font-unbounded text-[#F5EBEB] text-3xl sm:text-2xl lg:text-3xl font-bold p-4 sm:p-6 lg:p-8 mt-4 sm:mt-6 lg:mt-10">
+            {post.title}
+          </h1>
+        </div>
         <div className="w-full mx-auto">
           {post.imageUrl && (
-            <div className="relative h-100 overflow-hidden text-right">
+            <div className="w-full text-right">
               <Image
                 src={post.imageUrl}
                 alt={`Обложка для поста "${post.title}"`}
-                fill
-                style={{ objectFit: "cover" }}
+                width={0}
+                height={0}
+                sizes="100vw"
+                style={{ width: "100%", height: "auto" }}
                 priority
               />
             </div>
@@ -54,13 +63,19 @@ export default async function PostPage({ params }: { params: { id: string } }) {
         </div>
       </main>
       {post.content && (
-        <div className="prose lg:prose-xl dark:prose-invert bg-background mt-5">
-          <p className="font-unbounded">{post.content}</p>
-          <p className="w-50 text-right bg-background text-[#F5EBEB] font-unbounded mb-5">
-            Опубликовано: {new Date(post.createdAt).toLocaleDateString("ru-RU")}
+        <div className="w-full mx-auto px-100 py-10 bg-background flex flex-col min-h-[200px] prose lg:prose-xl dark:prose-invert max-w-none">
+          <p className="font-unbounded text-[#F5EBEB] text-justify flex-grow mb-6">
+            {post.content}
           </p>
+          <div className="w-full text-right mt-auto">
+            <span className="inline-block bg-background text-[#F5EBEB] font-unbounded text-sm sm:text-base">
+              Опубликовано:{" "}
+              {new Date(post.createdAt).toLocaleDateString("ru-RU")}
+            </span>
+          </div>
         </div>
       )}
+      <Footer />
     </>
   );
 }

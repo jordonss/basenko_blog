@@ -46,7 +46,7 @@ export default function PostList({
             <button
               onClick={loadMorePosts}
               disabled={isLoading}
-              className="bg-[#4A5C43] text-white font-bold py-3 px-8 rounded-md hover:bg-opacity-90 transition-colors disabled:bg-gray-400"
+              className="bg-[#4A5C43] font-unbounded text-2xl text-white font-bold py-3 px-8 rounded-md hover:bg-opacity-90 transition-colors disabled:bg-gray-400"
             >
               {isLoading ? "Загрузка..." : "Больше историй"}
             </button>
