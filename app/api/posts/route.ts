@@ -1,55 +1,73 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
-import prisma from '../../lib/prisma';
+import { NextRequest, NextResponse } from "next/server";
+import { createClient } from "../../utils/supabase/sever";
+import { createClient as createSupabaseAdmin } from "@supabase/supabase-js";
+import prisma from "../../lib/prisma";
+
+const ADMIN_EMAIL = "nemezg@gmail.com";
 
 // Инициализируем Supabase клиент
-const supabase = createClient(
+const supabaseAdmin = createSupabaseAdmin(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 );
 
 export async function POST(req: NextRequest) {
   try {
+    // 1. Инициализируем клиент и получаем пользователя
+    const supabase = await createClient(); // <-- await, так как функция async
+    const {
+      data: { user },
+      error: authError,
+    } = await supabase.auth.getUser();
+
+    // 2. Проверяем, авторизован ли пользователь
+    if (authError || !user) {
+      return NextResponse.json(
+        { error: "Вы не авторизованы" },
+        { status: 401 }
+      );
+    }
+
+    // 3. 👮‍♂️ ПРОВЕРКА НА АДМИНА
+    // Если email пользователя не совпадает с email админа — до свидания
+    if (user.email !== ADMIN_EMAIL) {
+      return NextResponse.json(
+        { error: "У вас нет прав администратора" },
+        { status: 403 }
+      );
+    }
+
+    // --- Дальше ваш старый код загрузки ---
     const formData = await req.formData();
-    const title = formData.get('title') as string;
-    const content = formData.get('content') as string;
-    const imageFile = formData.get('image') as File | null;
+    const title = formData.get("title") as string;
+    const content = formData.get("content") as string;
+    const imageFile = formData.get("image") as File | null;
 
     let imageUrl: string | undefined = undefined;
 
-    // 1. Если картинка прикреплена, загружаем её в Supabase Storage
     if (imageFile && imageFile.size > 0) {
       const fileName = `${Date.now()}-${imageFile.name}`;
-      const { data, error } = await supabase.storage
-        .from('posts') // Название вашего bucket
+      // Используем supabaseAdmin для загрузки, чтобы точно не было проблем с правами
+      const { data, error: uploadError } = await supabaseAdmin.storage
+        .from("posts")
         .upload(fileName, imageFile);
 
-      if (error) {
-        throw new Error(`Ошибка загрузки картинки: ${error.message}`);
-      }
+      if (uploadError) throw new Error(uploadError.message);
 
-      // 2. Получаем публичный URL загруженного файла
-      const { data: urlData } = supabase.storage
-        .from('posts')
+      const { data: urlData } = supabaseAdmin.storage
+        .from("posts")
         .getPublicUrl(data.path);
-
       imageUrl = urlData.publicUrl;
     }
 
-    // 3. Создаем запись в базе данных с помощью Prisma
     const newPost = await prisma.post.create({
-      data: {
-        title,
-        content,
-        imageUrl: imageUrl, // Сохраняем URL картинки (или null)
-      },
+      data: { title, content, imageUrl, authorId: user.id, published: true },
     });
 
     return NextResponse.json(newPost, { status: 201 });
   } catch (error) {
-    console.error(error);
-    const errorMessage = error instanceof Error ? error.message : 'Произошла неизвестная ошибка';
-    return NextResponse.json({ error: errorMessage }, { status: 500 });
+    const message = error instanceof Error ? error.message : "Ошибка сервера";
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }
 
@@ -57,7 +75,7 @@ export const POSTS_PER_PAGE = 3;
 
 export async function GET(req: NextRequest) {
   const url = new URL(req.url);
-  const page = Number(url.searchParams.get('page') || '1');
+  const page = Number(url.searchParams.get("page") || "1");
   const skip = (page - 1) * POSTS_PER_PAGE;
 
   try {
@@ -65,14 +83,18 @@ export async function GET(req: NextRequest) {
       prisma.post.findMany({
         take: POSTS_PER_PAGE,
         skip: skip,
-        orderBy: { createdAt: 'desc' },
+        orderBy: { createdAt: "desc" },
       }),
       prisma.post.count(),
     ]);
     const hasMore = skip + posts.length < totalPosts;
     return NextResponse.json({ posts, hasMore });
   } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : 'Произошла неизвестная ошибка';
-    return NextResponse.json({ error: `Ошибка загрузки постов: ${errorMessage}` }, { status: 500 });
+    const errorMessage =
+      error instanceof Error ? error.message : "Произошла неизвестная ошибка";
+    return NextResponse.json(
+      { error: `Ошибка загрузки постов: ${errorMessage}` },
+      { status: 500 }
+    );
   }
 }

@@ -48,14 +48,14 @@ export default async function PostPage({ params }: { params: { id: string } }) {
         </div>
         <div className="w-full mx-auto">
           {post.imageUrl && (
-            <div className="w-full text-right">
+            <div className="relative w-full aspect-video overflow-hidden">
               <Image
                 src={post.imageUrl}
                 alt={`Обложка для поста "${post.title}"`}
-                width={0}
-                height={0}
-                sizes="100vw"
-                style={{ width: "100%", height: "auto" }}
+                fill
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                className="object-cover"
+								quality={95}
                 priority
               />
             </div>

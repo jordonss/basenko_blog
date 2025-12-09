@@ -1,4 +1,5 @@
 import Link from "next/link";
+import AuthButton from "./auth-button";
 
 export default function MainHeader() {
   return (
@@ -14,7 +15,7 @@ export default function MainHeader() {
             <Link href="/gallery">Галерея</Link>
           </li>
           <li className="ml-auto mr-21">
-            <Link href="/login">Войти</Link>
+            <AuthButton />
           </li>
         </ul>
       </nav>
