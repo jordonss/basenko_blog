@@ -3,9 +3,9 @@ import { Unbounded } from "next/font/google";
 import "./globals.css";
 
 const unbounded = Unbounded({
-	variable: "--font-unbounded",
-	subsets: ["latin"],
-	weight: ["400", "700", "900"],
+  variable: "--font-unbounded",
+  subsets: ["latin"],
+  weight: ["400", "700", "900"],
 });
 
 export const metadata: Metadata = {
@@ -20,11 +20,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${unbounded.variable} antialiased`}
-      >
-        {children}
-      </body>
+      <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      </head>
+      <body className={`${unbounded.variable} antialiased`}>{children}</body>
     </html>
   );
 }

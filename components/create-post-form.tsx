@@ -80,18 +80,21 @@ export default function CreatePostForm() {
     }
   };
 
-  return (
+return (
     <form
       onSubmit={handleSubmit}
-      className="max-w-5xl w-full mx-auto p-8 bg-white rounded-2xl shadow-xl border border-gray-100 space-y-6 transition-all hover:shadow-2xl"
+      // Изменено: p-4 для мобильных, p-8 для десктопа. max-w-5xl остается для больших экранов.
+      className="max-w-5xl w-full mx-auto p-4 sm:p-6 md:p-8 bg-white rounded-2xl shadow-xl border border-gray-100 space-y-4 md:space-y-6 transition-all hover:shadow-2xl"
     >
-      <h2 className="text-2xl font-bold text-background font-unbounded text-center mb-4">
+      {/* Изменено: text-xl на мобильных, text-2xl на десктопе */}
+      <h2 className="text-xl md:text-2xl font-bold text-background font-unbounded text-center mb-2 md:mb-4">
         Новый пост
       </h2>
+
       <div className="font-unbounded group">
         <label
           htmlFor="title"
-          className="block text-sm font-medium text-background mb-2 transition-colors group-focus-within:text-background"
+          className="block text-sm font-medium text-background mb-1 md:mb-2 transition-colors group-focus-within:text-background"
         >
           Заголовок <span className="text-red-500">*</span>
         </label>
@@ -101,7 +104,8 @@ export default function CreatePostForm() {
           name="title"
           onInput={() => handleInput("title")}
           placeholder="Введите название..."
-          className={`w-full px-4 py-3 rounded-xl bg-gray-50 border text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 transition-all duration-200
+          // Изменено: py-2.5 на мобильных, py-3 на десктопе
+          className={`w-full px-4 py-2.5 md:py-3 rounded-xl bg-gray-50 border text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 transition-all duration-200
             ${
               errors.title
                 ? "border-red-500 focus:ring-red-200 bg-red-50"
@@ -109,14 +113,14 @@ export default function CreatePostForm() {
             }`}
         />
         {errors.title && (
-          <p className="text-red-500 text-xs mt-1 ml-1">{errors.title}</p>
+          <p className="text-red-500 text-[10px] md:text-xs mt-1 ml-1">{errors.title}</p>
         )}
       </div>
 
       <div className="font-unbounded group">
         <label
           htmlFor="content"
-          className="block text-sm font-medium text-background mb-2 transition-colors group-focus-within:text-background"
+          className="block text-sm font-medium text-background mb-1 md:mb-2 transition-colors group-focus-within:text-background"
         >
           Содержание <span className="text-red-500">*</span>
         </label>
@@ -126,7 +130,8 @@ export default function CreatePostForm() {
           rows={4}
           onInput={() => handleInput("content")}
           placeholder="О чем вы хотите рассказать?"
-          className={`w-full px-4 py-3 rounded-xl bg-gray-50 border text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 transition-all duration-200 resize-y min-h-[220px]
+          // Изменено: min-h уменьшен для мобильных, чтобы не занимать весь экран
+          className={`w-full px-4 py-2.5 md:py-3 rounded-xl bg-gray-50 border text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 transition-all duration-200 resize-y min-h-[160px] md:min-h-[220px]
             ${
               errors.content
                 ? "border-red-500 focus:ring-red-200 bg-red-50"
@@ -134,14 +139,14 @@ export default function CreatePostForm() {
             }`}
         />
         {errors.content && (
-          <p className="text-red-500 text-xs mt-1 ml-1">{errors.content}</p>
+          <p className="text-red-500 text-[10px] md:text-xs mt-1 ml-1">{errors.content}</p>
         )}
       </div>
 
       <div className="font-unbounded">
         <label
           htmlFor="image"
-          className="block text-sm font-medium text-background mb-2"
+          className="block text-sm font-medium text-background mb-1 md:mb-2"
         >
           Картинка 🖼️
         </label>
@@ -152,10 +157,11 @@ export default function CreatePostForm() {
             name="image"
             accept="image/*"
             onInput={() => handleInput("image")}
-            className={`block w-full text-sm text-gray-500
-              file:mr-4 file:py-2.5 file:px-4
+            // Изменено: file:px-3 на мобильных, адаптирован размер текста
+            className={`block w-full text-xs md:text-sm text-gray-500
+              file:mr-2 md:file:mr-4 file:py-2 file:md:py-2.5 file:px-3 md:file:px-4
               file:rounded-xl file:border-0
-              file:text-sm file:font-semibold
+              file:text-xs md:file:text-sm file:font-semibold
               file:bg-indigo-50 file:text-background
               hover:file:bg-indigo-100
               cursor-pointer file:cursor-pointer
@@ -165,13 +171,13 @@ export default function CreatePostForm() {
           />
         </div>
         {errors.image && (
-          <p className="text-red-500 text-xs mt-1 ml-1">{errors.image}</p>
+          <p className="text-red-500 text-[10px] md:text-xs mt-1 ml-1">{errors.image}</p>
         )}
       </div>
 
       {serverError && (
         <div className="p-3 rounded-lg bg-red-50 border border-red-200 animate-pulse">
-          <p className="text-sm text-red-600 text-center font-medium">
+          <p className="text-xs md:text-sm text-red-600 text-center font-medium">
             ⚠️ {serverError}
           </p>
         </div>
@@ -180,7 +186,8 @@ export default function CreatePostForm() {
       <button
         type="submit"
         disabled={loading}
-        className={`w-full py-3.5 px-6 font-unbounded font-bold text-white rounded-xl shadow-lg transition-all duration-200 
+        // Изменено: py-3 на мобильных, py-3.5 на десктопе
+        className={`w-full py-3 md:py-3.5 px-6 font-unbounded font-bold text-white rounded-xl shadow-lg transition-all duration-200 
           ${
             loading
               ? "bg-gray-400 cursor-not-allowed"
@@ -191,8 +198,8 @@ export default function CreatePostForm() {
       </button>
 
       {message && (
-        <div className="p-3 rounded-lg bg-green-50 border border-green-200 mt-4">
-          <p className="text-sm text-green-600 text-center font-medium">
+        <div className="p-3 rounded-lg bg-green-50 border border-green-200 mt-2 md:mt-4">
+          <p className="text-xs md:text-sm text-green-600 text-center font-medium">
             ✅ {message}
           </p>
         </div>

@@ -14,34 +14,44 @@ export default async function AuthButton() {
   const isAdmin = user?.email === ADMIN_EMAIL;
 
   return user ? (
-    <div className="flex items-center gap-4">
-      <span className="text-sm">Привет, {user.email}!</span>
-      {isAdmin && (
-        <>
-          <Link
-            href="/new-post"
-            className="bg-foreground hover:bg-[#4a5c43] hover:text-[#F5EBEB] text-background py-2 px-4 rounded"
-          >
-            Создать пост
-          </Link>
-          <Link
-            href="/admin"
-            className="bg-foreground hover:bg-[#4a5c43] hover:text-[#F5EBEB] text-background py-2 px-4 rounded"
-          >
-            Админ панель
-          </Link>
-        </>
-      )}
-      <form action={signout}>
-        <button className="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded">
-          Выйти
-        </button>
-      </form>
+    // Переключаемся в ряд (flex-row) только на экранах шире 1024px (lg)
+    <div className="flex flex-col lg:flex-row items-end lg:items-center gap-3 lg:gap-4 w-full lg:w-auto">
+      
+      {/* Email: на планшетах и мобилках будет сверху */}
+      <span className="text-[10px] sm:text-xs lg:text-sm opacity-70 font-medium">
+        {user.email}
+      </span>
+
+      {/* Контейнер кнопок */}
+      <div className="flex flex-col sm:flex-row items-center gap-2 w-full sm:w-auto">
+        {isAdmin && (
+          <>
+            <Link
+              href="/new-post"
+              className="w-full sm:w-auto text-center whitespace-nowrap bg-foreground hover:bg-[#4a5c43] hover:text-[#F5EBEB] text-background py-2 px-4 rounded text-xs lg:text-sm transition-all shadow-sm"
+            >
+              Создать пост
+            </Link>
+            <Link
+              href="/admin"
+              className="w-full sm:w-auto text-center whitespace-nowrap bg-foreground hover:bg-[#4a5c43] hover:text-[#F5EBEB] text-background py-2 px-4 rounded text-xs lg:text-sm transition-all shadow-sm"
+            >
+              Админка
+            </Link>
+          </>
+        )}
+        
+        <form action={signout} className="w-full sm:w-auto">
+          <button className="w-full sm:w-auto bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded text-xs lg:text-sm transition-all shadow-sm">
+            Выйти
+          </button>
+        </form>
+      </div>
     </div>
   ) : (
     <Link
       href="/login"
-      className="bg-foreground hover:bg-[#4a5c43] hover:text-[#F5EBEB] text-background py-2 px-4 rounded"
+      className="bg-foreground hover:bg-[#4a5c43] hover:text-[#F5EBEB] text-background py-2 px-6 text-sm rounded transition-all font-bold"
     >
       Войти
     </Link>
