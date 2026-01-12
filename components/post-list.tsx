@@ -40,7 +40,6 @@ export default function PostList({
           ))}
         </div>
 
-        {/* Кнопка "Больше историй" */}
         <div className="text-center">
           {hasMore && (
             <button

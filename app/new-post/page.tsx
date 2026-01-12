@@ -16,7 +16,6 @@ export default async function NewPostPage() {
       <h1 className="text-2xl font-bold mb-4 font-unbounded text-center">
         Создать новый пост
       </h1>
-      {/* Импортируем и используем форму создания поста */}
       {isAdmin ? (
         <CreatePostForm />
       ) : (

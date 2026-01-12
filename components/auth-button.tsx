@@ -14,15 +14,12 @@ export default async function AuthButton() {
   const isAdmin = user?.email === ADMIN_EMAIL;
 
   return user ? (
-    // Переключаемся в ряд (flex-row) только на экранах шире 1024px (lg)
     <div className="flex flex-col lg:flex-row items-end lg:items-center gap-3 lg:gap-4 w-full lg:w-auto">
       
-      {/* Email: на планшетах и мобилках будет сверху */}
       <span className="text-[10px] sm:text-xs lg:text-sm opacity-70 font-medium">
         {user.email}
       </span>
 
-      {/* Контейнер кнопок */}
       <div className="flex flex-col sm:flex-row items-center gap-2 w-full sm:w-auto">
         {isAdmin && (
           <>

@@ -2,7 +2,6 @@
 
 import { useFormStatus as useFormStatus } from "react-dom";
 import { updatePost } from "../actions";
-// Предполагаем, что вы можете импортировать тип Post из Prisma
 import { Post } from "@prisma/client";
 
 interface EditPostFormProps {
@@ -29,10 +28,8 @@ function SubmitButton() {
 }
 
 export default function EditPostForm({ post }: EditPostFormProps) {
-  // Привязываем Server Action к ID поста
   const updateActionWithId = updatePost.bind(null, post.id);
 
-  // Получаем сообщение об ошибке из URL для отображения
   const searchParams = new URLSearchParams(
     typeof window !== "undefined" ? window.location.search : ""
   );
@@ -49,7 +46,6 @@ export default function EditPostForm({ post }: EditPostFormProps) {
         </p>
       )}
 
-      {/* Поле Заголовок */}
       <div>
         <label
           htmlFor="title"
@@ -61,14 +57,12 @@ export default function EditPostForm({ post }: EditPostFormProps) {
           type="text"
           id="title"
           name="title"
-          // Заполняем текущими данными
           defaultValue={post.title}
           required
           className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 text-background"
         />
       </div>
 
-      {/* Поле Контент */}
       <div>
         <label
           htmlFor="content"
@@ -79,7 +73,6 @@ export default function EditPostForm({ post }: EditPostFormProps) {
         <textarea
           id="content"
           name="content"
-          // Заполняем текущими данными
           defaultValue={post.content}
           rows={10}
           required
@@ -104,13 +97,11 @@ export default function EditPostForm({ post }: EditPostFormProps) {
         />
       </div>
 
-      {/* Чекбокс Опубликовано */}
       <div className="flex items-center">
         <input
           type="checkbox"
           id="published"
           name="published"
-          // Устанавливаем текущее состояние
           defaultChecked={post.published}
           className="h-4 w-4 text-blue-600 border-gray-300 rounded"
         />

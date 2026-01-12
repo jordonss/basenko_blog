@@ -1,4 +1,3 @@
-// app/admin/page.tsx
 import { createClient } from "../utils/supabase/sever";
 import { redirect } from "next/navigation";
 import prisma from "../lib/prisma";
@@ -13,26 +12,28 @@ export default async function AdminPage() {
     data: { user },
   } = await supabase.auth.getUser();
 
-  // 1. ПРОВЕРКА АВТОРИЗАЦИИ
   if (!user || user.email !== ADMIN_EMAIL) {
-    redirect("/"); // Перенаправляем не-админов на главную
+    redirect("/");
   }
 
-  // 2. ПОЛУЧЕНИЕ ДАННЫХ
   const posts = await prisma.post.findMany({
     orderBy: { createdAt: "desc" },
   });
 
   return (
     <div className="container mx-auto p-8">
-      <h1 className="text-3xl font-unbounded font-bold mb-6">Кабинет Администратора</h1>
+      <h1 className="text-3xl font-unbounded font-bold mb-6">
+        Кабинет Администратора
+      </h1>
       <Link
         href="/"
         className="bg-foreground hover:bg-[#4a5c43] hover:text-[#F5EBEB] text-background font-unbounded py-2 px-4 rounded"
       >
         Главная
       </Link>
-      <p className="text-lg mb-6 mt-6 font-unbounded">Добро пожаловать, {user.email}!</p>
+      <p className="text-lg mb-6 mt-6 font-unbounded">
+        Добро пожаловать, {user.email}!
+      </p>
 
       <div className="bg-white shadow overflow-hidden sm:rounded-lg">
         <ul className="divide-y divide-gray-200">
@@ -54,7 +55,6 @@ export default async function AdminPage() {
                 </span>
               </div>
 
-              {/* Кнопка удаления */}
               <DeleteButton postId={post.id} />
             </li>
           ))}

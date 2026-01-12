@@ -4,17 +4,14 @@ import type { Post } from "@prisma/client";
 
 export default function PostCard({ post }: { post: Post }) {
   return (
-    // Flex-контейнер для карточки, чтобы кнопка была внизу
     <div className="flex flex-col shadow-md overflow-hidden w-full md:w-[460px]">
       <h3 className="text-4xl font-black font-unbounded text-[#344532] mb-2 bg-transparent">
         {post.title}
       </h3>
       <p className="text-[#F5EBEB] font-unbounded leading-5 text-base p-3 flex-grow bg-(--background)">
-        {/* Обрезаем текст для превью */}
         {post.content?.substring(0, 360) || "Нет описания..."}
         {post.content && post.content.length > 350 ? "..." : ""}
       </p>
-      {/* Контейнер для картинки */}
       {post.imageUrl && (
         <div className="relative w-full h-48">
           <Image

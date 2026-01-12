@@ -1,6 +1,5 @@
 'use client';
 
-// Импортируем хук для отслеживания состояния формы (Next.js 15)
 import { useFormStatus as useFormStatus } from 'react-dom'; 
 import { deletePost } from '../actions';
 
@@ -11,11 +10,9 @@ interface DeleteButtonProps {
 export default function DeleteButton({ postId }: DeleteButtonProps) {
   const { pending } = useFormStatus();
 
-  // Привязываем Server Action к конкретному ID поста
   const deleteActionWithId = deletePost.bind(null, postId);
 
   return (
-    // Форма - самый простой способ вызова Server Action
     <form action={deleteActionWithId}>
       <button
         type="submit"

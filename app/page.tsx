@@ -22,9 +22,13 @@ export default async function Home() {
   return (
     <div>
       <HomePage />
-      <PostsGridPage />
-      <ImageSlider images={sliderImages} />
-			<Footer />
+      <section id="blog" className="scroll-mt-20">
+        <PostsGridPage />
+      </section>
+      <section id="gallery" className="scroll-mt-20">
+        <ImageSlider images={sliderImages} />
+      </section>
+      <Footer />
     </div>
   );
 }

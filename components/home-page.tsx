@@ -4,21 +4,17 @@ import Military from "@/images/uniform.png";
 
 export default function HomePage() {
   return (
-    <div className="relative overflow-hidden flex flex-col items-center"> {/* Центрируем всё содержимое */}
-      
-      {/* Карта — она абсолютная, ей всё равно */}
+    <div className="relative overflow-hidden flex flex-col items-center">
+
       <div className="absolute w-full lg:w-[65%] inset-0 bg-[url(../images/world-map.png)] bg-cover bg-center opacity-5 pointer-events-none"></div>
       
-      {/* Хедер выносим в отдельный контейнер на всю ширину */}
       <div className="w-full">
         <MainHeader />
       </div>
 
-      {/* Контентная часть */}
       <div className="w-full max-w-[1600px] px-6 md:px-12 lg:px-20 py-8 md:py-16 z-10">
         <div className="flex flex-col lg:flex-row items-center justify-between gap-10 lg:gap-16">
           
-          {/* Текст: на мобильных центр, на десктопе лево */}
           <div className="w-full lg:w-3/5 text-center lg:text-left flex flex-col items-center lg:items-start">
             <h1 className="font-unbounded text-main font-bold">
               <span className="text-4xl sm:text-5xl md:text-[54px] xl:text-[80px] block leading-none">
@@ -35,7 +31,6 @@ export default function HomePage() {
             </p>
           </div>
 
-          {/* Картинка: всегда центрируется в своем блоке */}
           <div className="w-full lg:w-2/5 flex justify-center">
             <div className="w-full max-w-[320px] sm:max-w-md lg:max-w-full">
               <Image 

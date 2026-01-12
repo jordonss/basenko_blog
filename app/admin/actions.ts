@@ -7,28 +7,21 @@ import prisma from "../lib/prisma";
 
 const ADMIN_EMAIL = "nemezg@gmail.com";
 
-/**
- * Удаляет пост по его ID, только если вызывается администратором.
- */
 export async function deletePost(postId: string) {
-  // 1. ПРОВЕРКА АВТОРИЗАЦИИ (Безопасность)
   const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
 
   if (!user || user.email !== ADMIN_EMAIL) {
-    // В случае ошибки прав, выбрасываем ошибку или редиректим
     redirect("/?message=" + encodeURIComponent("Доступ запрещен"));
   }
 
-  // 2. УДАЛЕНИЕ ЧЕРЕЗ PRISMA
   try {
     await prisma.post.delete({
       where: { id: postId },
     });
 
-    // 3. ОБНОВЛЕНИЕ КЭША (Чтобы список обновился сразу)
     revalidatePath("/admin");
     revalidatePath("/");
   } catch (error) {
@@ -38,7 +31,6 @@ export async function deletePost(postId: string) {
 }
 
 export async function updatePost(postId: string, formData: FormData) {
-  // 1. ПРОВЕРКА АВТОРИЗАЦИИ (Безопасность)
   const supabase = await createClient();
   const {
     data: { user },
@@ -48,11 +40,9 @@ export async function updatePost(postId: string, formData: FormData) {
     redirect("/?message=" + encodeURIComponent("Доступ запрещен"));
   }
 
-  // 2. СБОР ДАННЫХ ИЗ ФОРМЫ
   const title = formData.get("title") as string;
   const content = formData.get("content") as string;
   const imageUrl = formData.get("imageUrl") as string;
-  // Чекбокс возвращает 'on' при true и null при false.
   const published = formData.get("published") === "on";
 
   if (!title || !content) {
@@ -63,7 +53,6 @@ export async function updatePost(postId: string, formData: FormData) {
     );
   }
 
-  // 3. ОБНОВЛЕНИЕ ЧЕРЕЗ PRISMA
   try {
     await prisma.post.update({
       where: { id: postId },
@@ -75,12 +64,10 @@ export async function updatePost(postId: string, formData: FormData) {
       },
     });
 
-    // 4. ОБНОВЛЕНИЕ КЭША И РЕДИРЕКТ
     revalidatePath("/admin");
     revalidatePath("/");
     revalidatePath(`/posts/${postId}`);
 
-    // Редирект обратно на админ-панель после успеха
     redirect("/admin?message=" + encodeURIComponent("Пост успешно обновлен!"));
   } catch (error) {
     if (
@@ -90,8 +77,6 @@ export async function updatePost(postId: string, formData: FormData) {
       typeof error.digest === "string" &&
       error.digest.startsWith("NEXT_REDIRECT")
     ) {
-      // Если это команда перенаправления, мы ее перебрасываем,
-      // чтобы фреймворк выполнил навигацию
       throw error;
     }
     console.error(
