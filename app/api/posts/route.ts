@@ -71,7 +71,7 @@ export async function POST(req: NextRequest) {
   }
 }
 
-export const POSTS_PER_PAGE = 3;
+const POSTS_PER_PAGE = 3;
 
 export async function GET(req: NextRequest) {
   const url = new URL(req.url);
