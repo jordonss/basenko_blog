@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import prisma from "@/app/lib/prisma";
 
-export default async function GET() {
+export async function GET() {
   try {
     const images = await prisma.sliderImage.findMany({
       orderBy: {
