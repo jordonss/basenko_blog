@@ -8,9 +8,7 @@ import Link from "next/link";
 const ADMIN_EMAIL = "nemezg@gmail.com";
 
 interface EditPostPageProps {
-  params: {
-    id: string;
-  };
+  params: Promise<{ id: string }>;
 }
 
 export default async function EditPostPage({ params }: EditPostPageProps) {
@@ -18,7 +16,8 @@ export default async function EditPostPage({ params }: EditPostPageProps) {
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  const postId = await params.id;
+  const resolvedParams = await params;
+  const postId = resolvedParams.id;
 
   if (!user || user.email !== ADMIN_EMAIL) {
     redirect("/");
