@@ -1,6 +1,6 @@
 import prisma from '../lib/prisma';
 import PostList from '../../components/post-list';
-import { POSTS_PER_PAGE } from '../api/posts/route';
+import { POSTS_PER_PAGE } from '@/app/lib/constants';
 
 async function getInitialData() {
   const [posts, totalPosts] = await prisma.$transaction([

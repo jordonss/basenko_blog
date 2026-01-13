@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "../../utils/supabase/sever";
 import { createClient as createSupabaseAdmin } from "@supabase/supabase-js";
 import prisma from "../../lib/prisma";
+import { POSTS_PER_PAGE } from "@/app/lib/constants";
 
 const ADMIN_EMAIL = "nemezg@gmail.com";
 
@@ -71,7 +72,6 @@ export async function POST(req: NextRequest) {
   }
 }
 
-const POSTS_PER_PAGE = 3;
 
 export async function GET(req: NextRequest) {
   const url = new URL(req.url);
